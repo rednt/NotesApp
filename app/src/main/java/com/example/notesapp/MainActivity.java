@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import androidx.activity.EdgeToEdge;
+import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,15 +28,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.addNote);
+        FloatingActionButton btn = findViewById(R.id.addNote);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, Note.class));
-            }
+        btn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Note.class)));
 
-    });
+
 
     }
 }

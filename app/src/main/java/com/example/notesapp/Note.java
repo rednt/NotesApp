@@ -1,16 +1,20 @@
 package com.example.notesapp;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 
+
+import android.view.View;
+import android.widget.ImageButton;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Note extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,5 +27,4 @@ public class Note extends AppCompatActivity {
         });
 
     }
-
 }

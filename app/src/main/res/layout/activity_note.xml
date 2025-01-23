@@ -38,9 +38,9 @@
         android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
-        android:hint="@string/lorem_ipsum"
+        android:hint="@string/app_name"
         android:inputType="textMultiLine"
-        android:textColorHint="#546E7A"
+        android:textColorHint="#556266"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,5 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/multiLineText" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
