@@ -1,5 +1,6 @@
 package com.example.notesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -33,25 +34,46 @@ public class Note extends AppCompatActivity {
         mainText = findViewById(R.id.mainText);
         title = findViewById(R.id.inputTitle);
 
-
-
-        Model data = new Model();
-
         //Button listener for save
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data.setId(1);
-                data.setTitle(title.getText().toString());
-                data.setText(mainText.getText().toString());
-                Toast.makeText(Note.this,
-                        data.toString(),
-                        Toast.LENGTH_SHORT).show();
 
-                Database database = new Database(Note.this);
+                Model data;
+                try {
+                    data = new Model();
+                    data.setTitle(title.getText().toString());
+                    data.setText(mainText.getText().toString());
+
+                    Database database = new Database(Note.this);
+                    boolean success = database.addData(data);
+
+                    if (success) {
+                        // Pass the new note back to MainActivity
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("title", data.getTitle());
+                        resultIntent.putExtra("text", data.getText());
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(Note.this, "Failed to save note", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(Note.this, "Error occurred", Toast.LENGTH_LONG).show();
+                }
+
+
+               /* Toast.makeText(Note.this,"Success" + success, Toast.LENGTH_LONG).show();
+
+                List<Model> newData = database.getData();
+
+                ArrayAdapter dataArray = new ArrayAdapter<Model>(Note.this, android.R.layout.simple_list_item_1, newData);
+
+                */
             }
-        });
+     });
 
 
     }

@@ -1,7 +1,5 @@
 package com.example.notesapp;
 
-import org.jetbrains.annotations.NotNull;
-
 public class Model {
     private int id;
     private String title;
@@ -18,7 +16,7 @@ public class Model {
 
     @Override
     public String toString() {
-        return id + " " + title + " " + text;
+        return title + " " + text;
     }
 
     public int getId() {

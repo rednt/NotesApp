@@ -1,9 +1,14 @@
 package com.example.notesapp;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database extends SQLiteOpenHelper {
 
@@ -25,5 +30,50 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public boolean addData(Model model){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_ID, model.getId());
+        cv.put(COLUMN_TITLE, model.getTitle());
+        cv.put(COLUMN_MAIN_TEXT, model.getText());
+
+        long insert = db.insert(NOTES_TABLE, null, cv);
+
+        return insert != -1;
+    }
+
+    public List<Model> getData(){
+
+        String query = "SELECT " + COLUMN_TITLE + " FROM " + NOTES_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<Model> returnList = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()){
+            do{
+
+                String Title = cursor.getString(0);
+                Model newData = new Model();
+                newData.setTitle(Title);
+                newData.setText(" ");
+                returnList.add(newData);
+
+            }while(cursor.moveToNext());
+
+        }else{
+
+            //Empty nothing added
+        }
+
+        //Closing the cursor and db
+
+        cursor.close();
+        db.close();
+        return returnList;
     }
 }
