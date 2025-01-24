@@ -30,7 +30,7 @@
         app:layout_constraintVertical_bias="0.137" />
 
     <EditText
-        android:id="@+id/multiLineText"
+        android:id="@+id/mainText"
         android:layout_width="300dp"
         android:layout_height="424dp"
         android:layout_marginStart="50dp"
@@ -55,7 +55,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multiLineText" />
+        app:layout_constraintTop_toBottomOf="@+id/mainText" />
 
 
 
