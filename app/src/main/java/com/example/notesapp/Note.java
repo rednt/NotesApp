@@ -48,6 +48,8 @@ public class Note extends AppCompatActivity {
                 Toast.makeText(Note.this,
                         data.toString(),
                         Toast.LENGTH_SHORT).show();
+
+                Database database = new Database(Note.this);
             }
         });
 
