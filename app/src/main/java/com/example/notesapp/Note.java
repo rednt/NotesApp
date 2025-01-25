@@ -50,8 +50,14 @@ public class Note extends AppCompatActivity {
                     boolean success = database.addData(data);
 
                     if (success) {
+                        int id = data.getId();
+
+                        //Debugging
+                        System.out.println("The id in Note.java is : "+id);
+
                         // Pass the new note back to MainActivity
                         Intent resultIntent = new Intent();
+                        resultIntent.putExtra("ID", id);
                         resultIntent.putExtra("title", data.getTitle());
                         resultIntent.putExtra("text", data.getText());
                         setResult(RESULT_OK, resultIntent);

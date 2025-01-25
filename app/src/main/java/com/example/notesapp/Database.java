@@ -36,13 +36,22 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_ID, model.getId());
+
         cv.put(COLUMN_TITLE, model.getTitle());
         cv.put(COLUMN_MAIN_TEXT, model.getText());
 
-        long insert = db.insert(NOTES_TABLE, null, cv);
+        long insertId = db.insert(NOTES_TABLE, null, cv);
 
-        return insert != -1;
+        if (insertId != -1) {
+            model.setId((int) insertId); // Set the generated ID back to the model
+
+            //Debugging
+            System.out.println("id inserted is: "+ insertId);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<Model> getData(){

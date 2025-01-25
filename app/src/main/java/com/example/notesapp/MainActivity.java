@@ -64,14 +64,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
+            int id = data.getIntExtra("ID", -1);
             String title = data.getStringExtra("title");
-            String text = data.getStringExtra("text");
 
-            if (title != null && text != null) {
+
+            if (id != -1 && title != null) {
                 // Add the new note to the list and update the adapter
-                Model newNote = new Model();
-                newNote.setTitle(title);
-                newNote.setText(text);
+                Model newNote = new Model(id,title,"");
+
+                //Debugging
+                System.out.println("this is for main activity: "+ id);
+
                 notesList.add(newNote);
                 adapter.notifyDataSetChanged();
             }
