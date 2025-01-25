@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    @Override
+/*    @Override
     protected void onResume() {
         super.onResume();
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             notesList.addAll(updatedNotes);
             adapter.notifyDataSetChanged();
         }
-    }
+    }*/
 
 
     @Override
