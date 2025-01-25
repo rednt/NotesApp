@@ -36,15 +36,14 @@ public class Note extends AppCompatActivity {
 
         //Check for existing note
 
-        Intent intent = getIntent();
-        if(intent.hasExtra("ID")){
-            int id = intent.getIntExtra("ID", -1);
-            String titleExist = intent.getStringExtra("title");
-            String text = intent.getStringExtra("text");
+        int noteId = getIntent().getIntExtra("ID", -1);
+        if (noteId != -1) {
+            // Fill the fields with the existing note's data
+            String noteTitle = getIntent().getStringExtra("title");
+            String noteText = getIntent().getStringExtra("text");
 
-            title.setText(titleExist);
-            mainText.setText(text);
-
+            title.setText(noteTitle);
+            mainText.setText(noteText);
         }
 
         //Button listener for save
@@ -53,36 +52,42 @@ public class Note extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Model data;
-                try {
-                    data = new Model();
-                    data.setTitle(title.getText().toString());
-                    data.setText(mainText.getText().toString());
+                String noteTitle = title.getText().toString();
+                String noteText = mainText.getText().toString();
 
-                    Database database = new Database(Note.this);
-                    boolean success = database.addData(data);
+                Database database = new Database(Note.this);
+                boolean success;
+                Model data = new Model();
+                // Check if we are editing an existing note
+                int noteId = getIntent().getIntExtra("ID", -1);
+                if (noteId != -1) {
+                    // Update the existing note
+                    success = database.updateData(noteId, noteTitle, noteText);
+                    data.setId(noteId);
+                    data.setTitle(noteTitle);
+                    data.setText(noteText);
+                } else {
+                    // Create a new note
+                    data.setTitle(noteTitle);
+                    data.setText(noteText);
 
-                    if (success) {
-                        int id = data.getId();
-
-                        // Pass the new note back to MainActivity
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("ID", id);
-                        resultIntent.putExtra("title", data.getTitle());
-                        resultIntent.putExtra("text", data.getText());
-                        setResult(RESULT_OK, resultIntent);
-                        finish();
-                    } else {
-                        Toast.makeText(Note.this, "Failed to save note", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (Exception e) {
-                    Toast.makeText(Note.this, "Error occurred", Toast.LENGTH_LONG).show();
+                    success = database.addData(data);
+                    noteId = data.getId();  // Get the ID of the newly created note
                 }
 
-
+                if (success) {
+                    // Pass the updated/new note back to MainActivity
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("ID", noteId);
+                    resultIntent.putExtra("title", data.getTitle());
+                    resultIntent.putExtra("text", data.getText());
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
+                } else {
+                    Toast.makeText(Note.this, "Failed to save note", Toast.LENGTH_LONG).show();
+                }
             }
-     });
+        });
 
 
     }

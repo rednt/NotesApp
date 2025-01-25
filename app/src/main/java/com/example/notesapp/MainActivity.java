@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,35 +61,21 @@ public class MainActivity extends AppCompatActivity {
             });
 
         //Clicking on an item opens its related note
-        list.setOnItemClickListener((parent, view, position, id) -> {
-            // Get the selected note
-            Model selectedNote = notesList.get(position);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Model selectedNote = notesList.get(position);
 
-            // Pass note details to the Note activity
-            Intent intent = new Intent(MainActivity.this, Note.class);
-            intent.putExtra("ID", selectedNote.getId());
-            intent.putExtra("title", selectedNote.getTitle());
-            intent.putExtra("text", selectedNote.getText());
-            startActivity(intent);
+                // Start Note activity with the data of the selected note
+                Intent intent = new Intent(MainActivity.this, Note.class);
+                intent.putExtra("ID", selectedNote.getId());
+                intent.putExtra("title", selectedNote.getTitle());
+                intent.putExtra("text", selectedNote.getText());
+                startActivityForResult(intent, 1);
+            }
         });
 
         }
-
-/*    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Refresh the notes list only when the activity is resumed
-        Database database = new Database(this);
-        List<Model> updatedNotes = database.getData();
-
-        // Check if the list has changed and update it
-        if (updatedNotes.size() != notesList.size()) {
-            notesList.clear();
-            notesList.addAll(updatedNotes);
-            adapter.notifyDataSetChanged();
-        }
-    }*/
 
 
     @Override
@@ -101,14 +88,27 @@ public class MainActivity extends AppCompatActivity {
 
 
             if (id != -1 && title != null) {
-                // Add the new note to the list and update the adapter
-                Model newNote = new Model(id,title,text);
+                // Check if it's an existing note or a new one
+                boolean updated = false;
+                for (int i = 0; i < notesList.size(); i++) {
+                    Model note = notesList.get(i);
+                    if (note.getId() == id) {
+                        note.setTitle(title);
+                        note.setText(text);
+                        updated = true;
+                        break;
+                    }
+                }
 
+                if (!updated) {
+                    // If it's a new note, add it to the list
+                    Model newNote = new Model(id, title, text);
+                    notesList.add(newNote);
+                }
 
-
-                notesList.add(newNote);
                 adapter.notifyDataSetChanged();
-            }
         }
+    }
+
     }
 }

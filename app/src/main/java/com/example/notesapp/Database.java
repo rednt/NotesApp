@@ -33,6 +33,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public boolean addData(Model model){
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -84,5 +85,27 @@ public class Database extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return returnList;
+    }
+
+    //Updating records
+    public boolean updateData(int id, String title, String text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE, title);
+        cv.put(COLUMN_MAIN_TEXT, text);
+
+        // Update the record where the ID matches
+        int result = db.update(NOTES_TABLE, cv, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+
+        //Debugging
+        System.out.println("id updated is: " + id);
+        if (result != -1) {
+            System.out.println("Data Updated Successfully");
+        } else {
+            System.out.println("Data Update Failed");
+        }
+
+        return result > 0; // Return true if at least one row was updated
+
     }
 }
