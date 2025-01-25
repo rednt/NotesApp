@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton add;
     List<Model> notesList;
     ArrayAdapter<Model> adapter;
+    Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Load existing data from the database
 
-        Database database = new Database(this);
+        database = new Database(this);
         notesList.addAll(database.getData());
         adapter.notifyDataSetChanged();
 
@@ -58,7 +59,37 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+        //Clicking on an item opens its related note
+        list.setOnItemClickListener((parent, view, position, id) -> {
+            // Get the selected note
+            Model selectedNote = notesList.get(position);
+
+            // Pass note details to the Note activity
+            Intent intent = new Intent(MainActivity.this, Note.class);
+            intent.putExtra("ID", selectedNote.getId());
+            intent.putExtra("title", selectedNote.getTitle());
+            intent.putExtra("text", selectedNote.getText());
+            startActivity(intent);
+        });
+
         }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Refresh the notes list only when the activity is resumed
+        Database database = new Database(this);
+        List<Model> updatedNotes = database.getData();
+
+        // Check if the list has changed and update it
+        if (updatedNotes.size() != notesList.size()) {
+            notesList.clear();
+            notesList.addAll(updatedNotes);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -66,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             int id = data.getIntExtra("ID", -1);
             String title = data.getStringExtra("title");
+            String text = data.getStringExtra("text");
 
 
             if (id != -1 && title != null) {
                 // Add the new note to the list and update the adapter
-                Model newNote = new Model(id,title,"");
+                Model newNote = new Model(id,title,text);
 
-                //Debugging
-                System.out.println("this is for main activity: "+ id);
+
 
                 notesList.add(newNote);
                 adapter.notifyDataSetChanged();

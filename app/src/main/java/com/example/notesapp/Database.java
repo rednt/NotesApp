@@ -40,23 +40,25 @@ public class Database extends SQLiteOpenHelper {
         cv.put(COLUMN_TITLE, model.getTitle());
         cv.put(COLUMN_MAIN_TEXT, model.getText());
 
-        long insertId = db.insert(NOTES_TABLE, null, cv);
+        long insert = db.insert(NOTES_TABLE, null, cv); // Inserts the data into the database
+        model.setId((int) insert); // Set the generated ID back to the model
+        db.close(); // Close the database connection to avoid leaks
 
-        if (insertId != -1) {
-            model.setId((int) insertId); // Set the generated ID back to the model
-
-            //Debugging
-            System.out.println("id inserted is: "+ insertId);
-
-            return true;
+        //Debugging
+        System.out.println("id inserted is: " + insert);
+        if (insert != -1) {
+            System.out.println("Data Inserted Successfully");
         } else {
-            return false;
+            System.out.println("Data Insertion Failed");
         }
-    }
+
+        return insert != -1;
+        }
+
 
     public List<Model> getData(){
 
-        String query = "SELECT " + COLUMN_TITLE + " FROM " + NOTES_TABLE;
+        String query = "SELECT " + COLUMN_ID + ", " + COLUMN_TITLE + ", " + COLUMN_MAIN_TEXT + " FROM " + NOTES_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();
 
         List<Model> returnList = new ArrayList<>();
@@ -66,17 +68,15 @@ public class Database extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             do{
 
-                String Title = cursor.getString(0);
-                Model newData = new Model();
-                newData.setTitle(Title);
-                newData.setText(" ");
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String text = cursor.getString(2);
+
+                Model newData = new Model(id, title, text);
                 returnList.add(newData);
 
             }while(cursor.moveToNext());
 
-        }else{
-
-            //Empty nothing added
         }
 
         //Closing the cursor and db

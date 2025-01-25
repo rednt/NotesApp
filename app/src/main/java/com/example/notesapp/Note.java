@@ -34,6 +34,19 @@ public class Note extends AppCompatActivity {
         mainText = findViewById(R.id.mainText);
         title = findViewById(R.id.inputTitle);
 
+        //Check for existing note
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("ID")){
+            int id = intent.getIntExtra("ID", -1);
+            String titleExist = intent.getStringExtra("title");
+            String text = intent.getStringExtra("text");
+
+            title.setText(titleExist);
+            mainText.setText(text);
+
+        }
+
         //Button listener for save
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -52,9 +65,6 @@ public class Note extends AppCompatActivity {
                     if (success) {
                         int id = data.getId();
 
-                        //Debugging
-                        System.out.println("The id in Note.java is : "+id);
-
                         // Pass the new note back to MainActivity
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("ID", id);
@@ -71,13 +81,6 @@ public class Note extends AppCompatActivity {
                 }
 
 
-               /* Toast.makeText(Note.this,"Success" + success, Toast.LENGTH_LONG).show();
-
-                List<Model> newData = database.getData();
-
-                ArrayAdapter dataArray = new ArrayAdapter<Model>(Note.this, android.R.layout.simple_list_item_1, newData);
-
-                */
             }
      });
 

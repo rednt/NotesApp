@@ -16,7 +16,7 @@ public class Model {
 
     @Override
     public String toString() {
-        return id + " " + title + " " + text;
+        return title;
     }
 
     public int getId() {
