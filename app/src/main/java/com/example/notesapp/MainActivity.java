@@ -1,12 +1,14 @@
 package com.example.notesapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -72,6 +74,37 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("title", selectedNote.getTitle());
                 intent.putExtra("text", selectedNote.getText());
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Model note = notesList.get(position);
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Delete Note")
+                        .setMessage("Are you sure you want to delete this note?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Delete note from database
+                                boolean isDeleted = database.deleteData(note.getId());
+                                if (isDeleted) {
+                                    // Remove the note from the list and update the adapter
+                                    notesList.remove(position);
+                                    adapter.notifyDataSetChanged();
+                                    Toast.makeText(MainActivity.this, "Note deleted", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Failed to delete note", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+
+                return true;
             }
         });
 

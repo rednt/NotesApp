@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,5 +106,17 @@ public class Database extends SQLiteOpenHelper {
 
         return result > 0; // Return true if at least one row was updated
 
+    }
+
+    public boolean deleteData(int id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ID, id);
+
+        int result = db.delete(NOTES_TABLE, COLUMN_ID + " =?", new String[]{String.valueOf(id)});
+
+
+        return result > 0;
     }
 }
