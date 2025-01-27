@@ -9,7 +9,7 @@ The app allows users to create, edit, and delete notes.
 
 ## Screenshots :
 
-###### (ui sucks sorry)
+ (ui sucks sorry)
 
 <img src = "Screenshot_Saved_list.png" alt="saved notes list" width="100"/>
 <img src = "Screenshot_Edit.png" alt="edit/save note" width="100"/>
