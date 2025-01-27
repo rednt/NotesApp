@@ -7,9 +7,13 @@ This project is mainly for me to learn basics of android development.
 The app allows users to create, edit, and delete notes.
 
 
+## Features :
+
+-Search bar (soon)
+-Better ui (soon)
+
 ## Screenshots :
 
- (ui sucks sorry)
 
 <img src = "Screenshot_Saved_list.png" alt="saved notes list" width="100"/>
 <img src = "Screenshot_Edit.png" alt="edit/save note" width="100"/>
@@ -21,3 +25,5 @@ Clone this repository and import into Android Studio
 ``` bash
 git clone git@github.com:rednt/NotesApp.git
 ```
+
+
