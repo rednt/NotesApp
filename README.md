@@ -9,7 +9,7 @@ The app allows users to create, edit, and delete notes.
 
 ## Features :
 
--Search bar (soon)
+-Search bar (soon) <br> 
 -Better ui (soon)
 
 ## Screenshots :
